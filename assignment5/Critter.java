@@ -48,7 +48,27 @@ public abstract class Critter {
 		myPackage = Critter.class.getPackage().toString().split(" ")[1];
 	}
 	
-	protected final String look(int direction, boolean steps) {return "";}
+	protected final String look(int direction, boolean steps) {
+		int x_origin = this.x_coord;
+		int y_origin = this.y_coord;
+		if(steps == false) {
+			movement(direction);
+		}else if(steps == true) {
+			movement(direction);
+			movement(direction);
+		}
+		for(int i = 0;i < population.size();i++) {
+				if(detectCollision(this,population.get(i)) && this != population.get(i)) {
+					this.x_coord = x_origin;
+					this.y_coord = y_origin;
+					return population.get(i).toString();
+				}
+		}
+		this.x_coord = x_origin;
+		this.y_coord = y_origin;
+		return null;
+
+	}
 	
 	/* rest is unchanged from Project 4 */
 	
@@ -77,40 +97,42 @@ public abstract class Critter {
 	 * walks in a straight line that is the current critter's current coordinates
 	 * @param direction
 	 */
+	protected final void movement(int direction) {
+		switch(direction) {
+		case 0: this.x_coord += 1;
+				break;
+		case 1: this.x_coord += 1;
+				this.y_coord -= 1;
+				break;
+		case 2: this.y_coord -= 1;
+				break;
+		case 3: this.x_coord -= 1;
+				this.y_coord -= 1;
+				break;
+		case 4: this.x_coord -= 1;
+				break;
+		case 5: this.x_coord -= 1;
+				this.y_coord += 1;
+				break;
+		case 6: this.y_coord += 1;
+				break;
+		case 7: this.x_coord += 1;
+				this.y_coord += 1;
+				break;
+		}
+	}
 	protected final void walk(int direction) {
+		this.energy -= Params.walk_energy_cost;
 		if(this.moved == true) {
-			this.energy -= Params.walk_energy_cost;
+
 			return;
 		}
 		if(getEnergy() < Params.walk_energy_cost) {
-			this.energy -= Params.walk_energy_cost;
 			remove.add(this);
 			return;
 		}
-		this.energy -= Params.walk_energy_cost;
 		this.moved = true;
-		switch(direction) {
-			case 0: this.x_coord += 1;
-					break;
-			case 1: this.x_coord += 1;
-					this.y_coord -= 1;
-					break;
-			case 2: this.y_coord -= 1;
-					break;
-			case 3: this.x_coord -= 1;
-					this.y_coord -= 1;
-					break;
-			case 4: this.x_coord -= 1;
-					break;
-			case 5: this.x_coord -= 1;
-					this.y_coord += 1;
-					break;
-			case 6: this.y_coord += 1;
-					break;
-			case 7: this.x_coord += 1;
-					this.y_coord += 1;
-					break;
-		}
+		movement(direction);
 		this.x_coord = (this.x_coord % Params.world_width);
 		this.y_coord = (this.y_coord % Params.world_height);
 		if(this.x_coord < 0) {
@@ -125,38 +147,17 @@ public abstract class Critter {
 	 * @param direction
 	 */
 	protected final void run(int direction) {
-		if(this.moved == true) {
-			this.energy -= Params.run_energy_cost;
-			return;
-		}
 		if(getEnergy() < Params.run_energy_cost) {
 			remove.add(this);
 			return;
 		}
 		this.energy -= Params.run_energy_cost;
-		this.moved = true;
-		switch(direction) {
-			case 0: this.x_coord += 2;
-					break;
-			case 1: this.x_coord += 2;
-					this.y_coord -= 2;
-					break;
-			case 2: this.y_coord -= 2;
-					break;
-			case 3: this.x_coord -= 2;
-					this.y_coord -= 2;
-					break;
-			case 4: this.x_coord -= 2;
-					break;
-			case 5: this.x_coord -= 2;
-					this.y_coord += 2;
-					break;
-			case 6: this.y_coord += 2;
-					break;
-			case 7: this.x_coord += 2;
-					this.y_coord += 2;
-					break;
+		if(this.moved == true) {
+			return;
 		}
+		this.moved = true;
+		movement(direction);
+		movement(direction);
 		this.x_coord = (this.x_coord % Params.world_width);
 		this.y_coord = (this.y_coord % Params.world_height);
 		if(this.x_coord < 0) {
@@ -175,28 +176,8 @@ public abstract class Critter {
 				}
 			}
 			if(check == true) {//you cannot fast travel when enemies are near by
-				switch(direction) {
-				case 0: this.x_coord -= 2;
-						break;
-				case 1: this.x_coord -= 2;
-						this.y_coord += 2;
-						break;
-				case 2: this.y_coord += 2;
-						break;
-				case 3: this.x_coord += 2;
-						this.y_coord += 2;
-						break;
-				case 4: this.x_coord += 2;
-						break;
-				case 5: this.x_coord += 2;
-						this.y_coord -= 2;
-						break;
-				case 6: this.y_coord -= 2;
-						break;
-				case 7: this.x_coord -= 2;
-						this.y_coord -= 2;
-						break;
-			}
+				movement(direction);
+				movement(direction);
 			this.x_coord = (this.x_coord % Params.world_width);
 			this.y_coord = (this.y_coord % Params.world_height);
 			if(this.x_coord < 0) {
