@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -21,6 +22,7 @@ public class Main extends Application {
 	static GridPane grid = new GridPane();
 	@Override
 		public void start(Stage primaryStage) {
+			
 			try {			
 
 				grid.setGridLinesVisible(true);
@@ -34,8 +36,7 @@ public class Main extends Application {
 				TextField statstxt = new TextField();
 				TextField seedtxt = new TextField();
 				TextField createtxt = new TextField();
-				TextField steptxt = new TextField();
-				
+				TextField steptxt = new TextField();				
 				steptxt.textProperty().addListener((observable,oldValue,newValue) -> {
 					if(!newValue.matches("\\d")) {
 						steptxt.setText(newValue.replaceAll("[^\\d]",  ""));
@@ -46,13 +47,17 @@ public class Main extends Application {
 						seedtxt.setText(newValue.replaceAll("[^\\d]",  ""));
 					}
 				});	
-				grid.add(create, 0, 0);
-				grid.add(createtxt,1,0);
-				grid.add(step,0,1);
-				grid.add(steptxt, 1, 1);
-				grid.add(quit, 0, 3);
+				int size = 600;
+				Scene scene = new Scene(grid, size, size+200);
+//				grid.add(create, 1, 1);
+//				grid.add(createtxt,1,0);
+//				grid.add(step,0,1);
+//				grid.add(steptxt, 1, 1);
+//				grid.add(quit, 0, 3);
 				
-				Scene scene = new Scene(grid, 500, 500);
+		
+				paintGridLines(grid);
+
 				primaryStage.setScene(scene);
 				
 				primaryStage.show();
@@ -155,7 +160,17 @@ public class Main extends Application {
 		
 	}
 	
+	private static void paintGridLines(GridPane grid) {
+		int size = 552;
+		for (int r = 0; r < Params.world_width; r++)
+			for (int c = 0; c < Params.world_height; c++) {
+				Shape s = new Rectangle(size/Params.world_height, size/Params.world_height);
+				s.setFill(null);
+				s.setStroke(Color.BLUEVIOLET);
+				grid.add(s, c, r);
+			}
 
+	}
 	
 	static Shape getIcon(int shapeIndex) {
 		Shape s = null;
