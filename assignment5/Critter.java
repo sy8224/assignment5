@@ -7,6 +7,7 @@ import assignment5.Algae;
 import assignment5.Critter;
 import assignment5.InvalidCritterException;
 import assignment5.Params;
+import javafx.scene.layout.GridPane;
 
 public abstract class Critter {
 	/* NEW FOR PROJECT 5 */
@@ -480,8 +481,10 @@ public abstract class Critter {
 	/**
 	 * function that displays the critters and borders of the world
 	 */
-	public static void displayWorld() {
+	public static void displayWorld(GridPane grid) {
 		// Complete this method.
+
+
 		WorldEdge(Params.world_width);
 		for(int y= 0; y < Params.world_height;y++) {
 			System.out.print("|");
@@ -499,6 +502,26 @@ public abstract class Critter {
 		}
 		WorldEdge(Params.world_width);
 	}
+	
+	/*public static void displayWorld() {
+		// Complete this method.
+		WorldEdge(Params.world_width);
+		for(int y= 0; y < Params.world_height;y++) {
+			System.out.print("|");
+			//print contents of the world
+			for(int x = 0; x < Params.world_width;x++) {
+				String loc = " ";
+				for(Critter crit : population) {
+					if(crit.x_coord == x && crit.y_coord == y) {
+						loc = crit.toString();
+					}
+				}
+			System.out.print(loc);
+			}
+		System.out.println("|");
+		}
+		WorldEdge(Params.world_width);
+	}*/
 	/**
 	 * displayWorld calls this function to output the borders onto console
 	 * @param width
