@@ -1,5 +1,6 @@
 package assignment5;
 
+import assignment5.Critter.CritterShape;
 import assignment5.Critter.TestCritter;
 
 public class Critter1 extends TestCritter {
@@ -33,7 +34,11 @@ public class Critter1 extends TestCritter {
 	}
 	@Override
 	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.TRIANGLE;
 	}
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() { 
+		return javafx.scene.paint.Color.BLUE; 
+	}
+
 }

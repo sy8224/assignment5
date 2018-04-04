@@ -2,6 +2,8 @@ package assignment5;
 
 import java.util.*;
 
+import assignment5.Critter.CritterShape;
+
 public class Critter2 extends Critter.TestCritter {
 	/**
 	 * runs in random directions
@@ -32,7 +34,10 @@ public class Critter2 extends Critter.TestCritter {
 	}
 	@Override
 	public CritterShape viewShape() {
-		// TODO Auto-generated method stub
-		return null;
+		return CritterShape.DIAMOND;
+	}
+	@Override
+	public javafx.scene.paint.Color viewOutlineColor() { 
+		return javafx.scene.paint.Color.CRIMSON; 
 	}
 }
