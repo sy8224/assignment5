@@ -8,6 +8,8 @@ import assignment5.Critter;
 import assignment5.InvalidCritterException;
 import assignment5.Params;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 public abstract class Critter {
 	/* NEW FOR PROJECT 5 */
@@ -483,24 +485,39 @@ public abstract class Critter {
 	 */
 	public static void displayWorld(GridPane grid) {
 		// Complete this method.
-
-
-		WorldEdge(Params.world_width);
 		for(int y= 0; y < Params.world_height;y++) {
-			System.out.print("|");
-			//print contents of the world
 			for(int x = 0; x < Params.world_width;x++) {
-				String loc = " ";
 				for(Critter crit : population) {
 					if(crit.x_coord == x && crit.y_coord == y) {
-						loc = crit.toString();
+						switch(crit.viewShape()) {
+						case CIRCLE:
+							Circle CritCircle = new Circle(100,100,20);
+							CritCircle.setStroke(crit.viewFillColor());
+							//edit creation to fit the size of the grid square
+							Main.grid.add(CritCircle, y, x);
+							
+								break;
+						case SQUARE:
+							Rectangle CritSquare = new Rectangle(10,10,10,10);
+							//edit creation to fit the size of the grid square
+							Main.grid.add(CritSquare, y, x);
+							break;
+						case TRIANGLE:
+			
+							break;
+						case DIAMOND:
+			
+							break;
+						case STAR:
+			
+							break;
+							//Add shape to grid
+						}
 					}
 				}
-			System.out.print(loc);
 			}
-		System.out.println("|");
 		}
-		WorldEdge(Params.world_width);
+
 	}
 	
 	/*public static void displayWorld() {
