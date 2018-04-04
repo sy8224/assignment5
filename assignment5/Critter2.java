@@ -1,4 +1,4 @@
-package assignment4;
+package assignment5;
 
 import java.util.*;
 
@@ -29,5 +29,10 @@ public class Critter2 extends Critter.TestCritter {
 	
 	public void test (List<Critter> l) {
 		
+	}
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

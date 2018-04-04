@@ -1,6 +1,6 @@
 package assignment5;
 
-import assignment5.Critter.TestCritter;
+import assignment5.Critter.TestCritter;	//???????remove
 
 public class Algae extends TestCritter {
 

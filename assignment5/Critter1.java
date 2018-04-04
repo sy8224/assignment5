@@ -1,6 +1,6 @@
-package assignment4;
+package assignment5;
 
-import assignment4.Critter.TestCritter;
+import assignment5.Critter.TestCritter;
 
 public class Critter1 extends TestCritter {
 	/**
@@ -30,5 +30,10 @@ public class Critter1 extends TestCritter {
 	@Override
 	public String toString () {
 		return "1";
+	}
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

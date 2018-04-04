@@ -1,6 +1,6 @@
-package assignment4;
+package assignment5;
 
-import assignment4.Critter.TestCritter;
+import assignment5.Critter.TestCritter;
 
 public class Critter4 extends TestCritter {
 	private static int Kills = 0;
@@ -26,16 +26,22 @@ public class Critter4 extends TestCritter {
 	 * outputs onto screen if apex predator kills another critter
 	 * @param Critter14
 	 */
-	public static void runStats(java.util.List<Critter> Critter14) {
+	public static String runStats(java.util.List<Critter> Critter14) {
 		int number = 0;
 		for (Object obj : Critter14) {
 			number++;
 		}
 		System.out.println(number + " apexs on the board");
 		System.out.println("Has killed " + Kills + " other Critters");
+		return "huh";
 	}
 	@Override
 	public String toString () {
 		return "4";
+	}
+	@Override
+	public CritterShape viewShape() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
