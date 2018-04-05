@@ -485,22 +485,23 @@ public abstract class Critter {
 	 */
 	public static void displayWorld(GridPane grid) {
 		// Complete this method.
-		for(int y= 0; y < Params.world_height;y++) {
-			for(int x = 0; x < Params.world_width;x++) {
+		grid.getChildren().clear();
+		
+		Main.paintGridLines(grid);
 				for(Critter crit : population) {
-					if(crit.x_coord == x && crit.y_coord == y) {
 						switch(crit.viewShape()) {
 						case CIRCLE:
-							Circle CritCircle = new Circle(100,100,20);
+							Circle CritCircle = new Circle(552/Params.world_height,552/Params.world_height,276/Params.world_height);
 							CritCircle.setStroke(crit.viewFillColor());
+							CritCircle.setFill(crit.viewFillColor());
 							//edit creation to fit the size of the grid square
-							Main.grid.add(CritCircle, y, x);
-							
+							Main.grid.add(CritCircle, crit.y_coord, crit.x_coord);
 								break;
 						case SQUARE:
-							Rectangle CritSquare = new Rectangle(10,10,10,10);
-							//edit creation to fit the size of the grid square
-							Main.grid.add(CritSquare, y, x);
+							Rectangle CritSquare = new Rectangle(552/Params.world_height,552/Params.world_height);
+							//CritSquare.setStroke(crit.viewOutlineColor());
+							//CritSquare.setFill(crit.viewFillColor());
+							Main.grid.add(CritSquare, crit.y_coord, crit.x_coord);
 							break;
 						case TRIANGLE:
 			
@@ -513,11 +514,7 @@ public abstract class Critter {
 							break;
 							//Add shape to grid
 						}
-					}
 				}
-			}
-		}
-
 	}
 	
 	/*public static void displayWorld() {
