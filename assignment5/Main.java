@@ -53,7 +53,7 @@ public class Main extends Application {
 					}
 				});	
 				int size = 600;
-				Scene scene = new Scene(grid, size+225, size+110);
+				Scene scene = new Scene(grid, size, size+200);
 				grid.add(create, 0, Params.world_height);
 				grid.add(createtxt,1,Params.world_height);
 				grid.add(step,0,Params.world_height+1);
@@ -71,12 +71,12 @@ public class Main extends Application {
 		                    public void handle(ActionEvent event) {
 		                    		//animation stuff
 		                    		Critter.displayWorld(grid);
-		            				grid.add(create, Params.world_width, Params.world_height);
-		            				grid.add(createtxt,Params.world_width+1,Params.world_height);
-		            				grid.add(step,Params.world_width,Params.world_height+1);
-		            				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
-		            				grid.add(quit, Params.world_width, Params.world_height+2);
-		            				grid.add(show,Params.world_width,Params.world_height+3);	//debug func
+		            				grid.add(create, 0, Params.world_height);
+		            				grid.add(createtxt,1,Params.world_height);
+		            				grid.add(step,0,Params.world_height+1);
+		            				grid.add(steptxt, 1, Params.world_height+1);
+		            				grid.add(quit, 0, Params.world_height+2);
+		            				grid.add(show,0,Params.world_height+3);	//debug func
 		                    }
 		                });
 
