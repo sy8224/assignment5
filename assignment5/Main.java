@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -36,14 +37,21 @@ public class Main extends Application {
 				Button quit = new Button("Quit");
 				Button seed = new Button("Seed");
 				Button stats = new Button("Statistics");
-
+				Button ani = new Button("Step Toggle");
+				
+				TextField anispeed = new TextField();
 				TextField statstxt = new TextField();
 				TextField statsres = new TextField();
 				TextField seedtxt = new TextField();
 				TextField createtxt = new TextField();
 				TextField steptxt = new TextField();			
-				statsres.setDisable(true);
-
+				anispeed.setMaxWidth(50);
+				anispeed.setPromptText("speed");
+				statstxt.setPromptText("Critter Stats");
+				createtxt.setPromptText("Make Critter");
+				seedtxt.setPromptText("Set Seed");
+				steptxt.setPromptText("# of steps");
+				statsres.setPromptText("Statistics Result");
 				steptxt.textProperty().addListener((observable,oldValue,newValue) -> {
 					if(!newValue.matches("\\d")) {
 						steptxt.setText(newValue.replaceAll("[^\\d]",  ""));
@@ -54,8 +62,14 @@ public class Main extends Application {
 						seedtxt.setText(newValue.replaceAll("[^\\d]",  ""));
 					}
 				});	
+				anispeed.textProperty().addListener((observable,oldValue,newValue) -> {
+					if(!newValue.matches("\\d")) {
+						steptxt.setText(newValue.replaceAll("[^\\d]",  ""));
+					}
+				});
+				
 				int size = 600;
-				Scene scene = new Scene(grid, size+225, size+110);
+				Scene scene = new Scene(grid, size+250, size+110);
 
 				paintGridLines(grid);
 
@@ -69,33 +83,10 @@ public class Main extends Application {
 				grid.add(seed, Params.world_width, Params.world_height+4);
 				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
 				grid.add(quit, Params.world_width, Params.world_height+5);
-				
-				Timeline tl = new Timeline();
-				tl.setCycleCount(10);
-		        KeyFrame stepframe = new KeyFrame(Duration.seconds(0.01),
-		                new EventHandler<ActionEvent>() {
-		                    public void handle(ActionEvent event) {
-				    			Critter.displayWorld(grid);
-		        				grid.add(create, Params.world_width, Params.world_height);
-		        				grid.add(createtxt,Params.world_width+1,Params.world_height);
-		        				grid.add(step,Params.world_width,Params.world_height+1);
-		        				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
-		        				grid.add(stats,Params.world_width,Params.world_height+2);
-		        				grid.add(statstxt, Params.world_width+1, Params.world_height+2);
-		        				grid.add(statsres, Params.world_width+1, Params.world_height+3);
-		        				grid.add(seed, Params.world_width, Params.world_height+4);
-		        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
-		        				grid.add(quit, Params.world_width, Params.world_height+5);
-		                    }
-		                });
-
-		    
-	
-		    //    tl.getKeyFrames().add(stepframe);
-		        //tl.play(); 
+				grid.add(anispeed, Params.world_width+2, Params.world_height+1);
+				grid.add(ani,Params.world_width,Params.world_height+3);
 				
 			
-				
 				primaryStage.setScene(scene);
 				primaryStage.show();
 
@@ -123,7 +114,11 @@ public class Main extends Application {
 		        				grid.add(seed, Params.world_width, Params.world_height+4);
 		        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
 		        				grid.add(quit, Params.world_width, Params.world_height+5);
+		        				grid.add(anispeed, Params.world_width+2, Params.world_height+1);
+		        				grid.add(ani,Params.world_width,Params.world_height+3);
 						} catch (InvalidCritterException e1) {
+							createtxt.setText("InvalidCritterClass");
+						} catch(NoClassDefFoundError e2) {
 							createtxt.setText("InvalidCritterClass");
 						}
 				    	
@@ -161,23 +156,34 @@ public class Main extends Application {
 								statstxt.setText("InvalidCritterClass");
 							} catch (InvocationTargetException e1) {
 								statstxt.setText("InvalidCritterClass");
+							}catch(NoClassDefFoundError e2) {
+								createtxt.setText("InvalidCritterClass");
 							}
+					    	
 				    }
 				    
 				    
 				});
+
 				step.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override public void handle(ActionEvent e) {
-
-				        new AnimationTimer() {
+				    	int steping = Integer.parseInt(steptxt.getText());
+				    	AnimationTimer timer;
+				    	
+				        timer = new AnimationTimer() {
+				        	int i = 0;
 				            @Override
-				            public void handle(long now) {
-						    	int steping = Integer.parseInt(steptxt.getText());
-						    	for(int i = 0; i < steping; i++) {	
-					    			Critter.worldTimeStep();
-
-							    	if(i % 10 == 0) {
-						    			Critter.displayWorld(grid);
+				            public void handle(long l) {
+				            	if(i < steping) {
+				            		create.setDisable(true);
+				            		step.setDisable(true);
+				            		seed.setDisable(true);
+				            		stats.setDisable(true);
+				            		quit.setDisable(true);
+				            		int num = Integer.parseInt("0" + anispeed.getText());
+				            		if(num == 0 || num < 0) {
+						            	Critter.worldTimeStep();
+						            	Critter.displayWorld(grid);
 				        				grid.add(create, Params.world_width, Params.world_height);
 				        				grid.add(createtxt,Params.world_width+1,Params.world_height);
 				        				grid.add(step,Params.world_width,Params.world_height+1);
@@ -187,15 +193,47 @@ public class Main extends Application {
 				        				grid.add(statsres, Params.world_width+1, Params.world_height+3);
 				        				grid.add(seed, Params.world_width, Params.world_height+4);
 				        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
-				        				grid.add(quit, Params.world_width, Params.world_height+5);  
-							    	}
-					    	}
-				            		//Animation?
-				                
-				            }
-				        }.start();
+				        				grid.add(quit, Params.world_width, Params.world_height+5);
+				        				grid.add(anispeed, Params.world_width+2, Params.world_height+1);
+				        				grid.add(ani,Params.world_width,Params.world_height+3);
+				            		}else if(i % num == 0)	{
+						            	Critter.worldTimeStep();
+						            	Critter.displayWorld(grid);
+				        				grid.add(create, Params.world_width, Params.world_height);
+				        				grid.add(createtxt,Params.world_width+1,Params.world_height);
+				        				grid.add(step,Params.world_width,Params.world_height+1);
+				        				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
+				        				grid.add(stats,Params.world_width,Params.world_height+2);
+				        				grid.add(statstxt, Params.world_width+1, Params.world_height+2);
+				        				grid.add(statsres, Params.world_width+1, Params.world_height+3);
+				        				grid.add(seed, Params.world_width, Params.world_height+4);
+				        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
+				        				grid.add(quit, Params.world_width, Params.world_height+5);
+				        				grid.add(anispeed, Params.world_width+2, Params.world_height+1);
+				        				grid.add(ani,Params.world_width,Params.world_height+3);
+				            	}
+				            		i++;
+				            	}else {
+				            		create.setDisable(false);
+				            		step.setDisable(false);
+				            		seed.setDisable(false);
+				            		stats.setDisable(false);
+				            		quit.setDisable(false);
+				            		this.stop();}
+				            	
+			            	}
+				        };
+						ani.setOnAction(new EventHandler<ActionEvent>() {
+						    @Override public void handle(ActionEvent e) {
+			            		create.setDisable(false);
+			            		step.setDisable(false);
+			            		seed.setDisable(false);
+			            		stats.setDisable(false);
+			            		quit.setDisable(false);
+						    	timer.stop();
+						    }});
+				        timer.start();
 				    }
-		    	                
 				});
 				quit.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override public void handle(ActionEvent e) {
