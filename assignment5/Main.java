@@ -1,8 +1,9 @@
-package assignment5;
+package assignment4;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-
+import javax.swing.*;
+import java.awt.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,7 +26,7 @@ public class Main extends Application {
 			
 			try {			
 
-				grid.setGridLinesVisible(true);
+				grid.setGridLinesVisible(false);
 
 				Button create = new Button("Create");
 				Button step = new Button("Step");
@@ -48,18 +49,28 @@ public class Main extends Application {
 					}
 				});	
 				int size = 600;
-				Scene scene = new Scene(grid, size, size+200);
-//				grid.add(create, 1, 1);
+				int i = 3;
+				int j = 4;
+				JPanel[][] panelHolder = new JPanel[i][j];    
+//				getContentPane().setLayout(new GridLayout(i,j));
+
+				for(int m = 0; m < i; m++) {
+				   for(int n = 0; n < j; n++) {
+				      panelHolder[m][n] = new JPanel();
+//				      add(panelHolder[m][n]);
+				   }
+				}
+				Scene scene = new Scene(grid, size+270, size+155);
+//				grid.add(create, 0, 0);
 //				grid.add(createtxt,1,0);
 //				grid.add(step,0,1);
 //				grid.add(steptxt, 1, 1);
 //				grid.add(quit, 0, 3);
 				
-		
-				paintGridLines(grid);
+
+				paintGridLines(grid,create,step,quit,seed,stats,statstxt,seedtxt,createtxt,steptxt);
 
 				primaryStage.setScene(scene);
-				
 				primaryStage.show();
 				
 				// Paints the icons.
@@ -160,7 +171,12 @@ public class Main extends Application {
 		
 	}
 	
-	private static void paintGridLines(GridPane grid) {
+	private static void paintGridLines(GridPane grid, Button b1, Button b2, Button b3, Button b4, Button b5, TextField t1, TextField t2, TextField t3, TextField t4) {
+		Button create = new Button("Create");
+		Button step = new Button("Step");
+		Button quit = new Button("Quit");
+		Button seed = new Button("Seed");
+		Button stats = new Button("Statistics");
 		int size = 552;
 		for (int r = 0; r < Params.world_width; r++)
 			for (int c = 0; c < Params.world_height; c++) {
@@ -169,7 +185,15 @@ public class Main extends Application {
 				s.setStroke(Color.BLUEVIOLET);
 				grid.add(s, c, r);
 			}
-
+		grid.add(b1, Params.world_width+20, Params.world_height+20);
+		grid.add(b5, Params.world_width+20, Params.world_height+25);
+		grid.add(b2, Params.world_width+20, Params.world_height+30);
+		grid.add(b4, Params.world_width+20, Params.world_height+35);
+		grid.add(b3, Params.world_width+20, Params.world_height+40);
+		grid.add(t3, Params.world_width+21, Params.world_height+20);
+		grid.add(t1, Params.world_width+21, Params.world_height+25);
+		grid.add(t2, Params.world_width+21, Params.world_height+30);
+		grid.add(t4, Params.world_width+21, Params.world_height+35);
 	}
 	
 	static Shape getIcon(int shapeIndex) {
