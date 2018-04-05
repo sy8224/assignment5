@@ -33,9 +33,10 @@ public class Critter4 extends TestCritter {
 		for (Object obj : Critter14) {
 			number++;
 		}
-		System.out.println(number + " apexs on the board");
-		System.out.println("Has killed " + Kills + " other Critters");
-		return "huh";
+		String st = "";
+		st += number + " apexx on the board";
+		st += "Has killed " + Kills + " other Critters";
+		return st;
 	}
 	@Override
 	public String toString () {

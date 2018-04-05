@@ -4,9 +4,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -19,8 +21,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-
+import java.util.Timer;
+import java.time.*;
 
 public class Main extends Application {
 	static GridPane grid = new GridPane();
@@ -35,7 +37,6 @@ public class Main extends Application {
 				Button seed = new Button("Seed");
 				Button stats = new Button("Statistics");
 
-				
 				TextField statstxt = new TextField();
 				TextField statsres = new TextField();
 				TextField seedtxt = new TextField();
@@ -70,27 +71,31 @@ public class Main extends Application {
 				grid.add(quit, Params.world_width, Params.world_height+5);
 				
 				Timeline tl = new Timeline();
-				tl.setCycleCount(Animation.INDEFINITE);
-		        KeyFrame stepframe = new KeyFrame(Duration.seconds(0.75),
+				tl.setCycleCount(10);
+		        KeyFrame stepframe = new KeyFrame(Duration.seconds(0.01),
 		                new EventHandler<ActionEvent>() {
 		                    public void handle(ActionEvent event) {
-		                    		Critter.displayWorld(grid);
-		            				grid.add(create, Params.world_width, Params.world_height);
-		            				grid.add(createtxt,Params.world_width+1,Params.world_height);
-		            				grid.add(step,Params.world_width,Params.world_height+1);
-		            				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
-		            				grid.add(stats,Params.world_width,Params.world_height+2);
-		            				grid.add(statstxt, Params.world_width+1, Params.world_height+2);
-		            				grid.add(statsres, Params.world_width+1, Params.world_height+3);
-		            				grid.add(seed, Params.world_width, Params.world_height+4);
-		            				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
-		            				grid.add(quit, Params.world_width, Params.world_height+5);
+				    			Critter.displayWorld(grid);
+		        				grid.add(create, Params.world_width, Params.world_height);
+		        				grid.add(createtxt,Params.world_width+1,Params.world_height);
+		        				grid.add(step,Params.world_width,Params.world_height+1);
+		        				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
+		        				grid.add(stats,Params.world_width,Params.world_height+2);
+		        				grid.add(statstxt, Params.world_width+1, Params.world_height+2);
+		        				grid.add(statsres, Params.world_width+1, Params.world_height+3);
+		        				grid.add(seed, Params.world_width, Params.world_height+4);
+		        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
+		        				grid.add(quit, Params.world_width, Params.world_height+5);
 		                    }
 		                });
 
-		        tl.getKeyFrames().add(stepframe);
-		        tl.play();
-		       
+		    
+	
+		    //    tl.getKeyFrames().add(stepframe);
+		        //tl.play(); 
+				
+			
+				
 				primaryStage.setScene(scene);
 				primaryStage.show();
 
@@ -107,6 +112,17 @@ public class Main extends Application {
 				    		String critClass = createtxt.getText();
 				    		critClass.trim();
 							Critter.makeCritter(critClass);
+				    			Critter.displayWorld(grid);
+		        				grid.add(create, Params.world_width, Params.world_height);
+		        				grid.add(createtxt,Params.world_width+1,Params.world_height);
+		        				grid.add(step,Params.world_width,Params.world_height+1);
+		        				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
+		        				grid.add(stats,Params.world_width,Params.world_height+2);
+		        				grid.add(statstxt, Params.world_width+1, Params.world_height+2);
+		        				grid.add(statsres, Params.world_width+1, Params.world_height+3);
+		        				grid.add(seed, Params.world_width, Params.world_height+4);
+		        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
+		        				grid.add(quit, Params.world_width, Params.world_height+5);
 						} catch (InvalidCritterException e1) {
 							createtxt.setText("InvalidCritterClass");
 						}
@@ -152,25 +168,34 @@ public class Main extends Application {
 				});
 				step.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override public void handle(ActionEvent e) {
-				    	int steping = Integer.parseInt(steptxt.getText());
-				    //	tl.stop();
-				    	for(int i = 0; i < steping; i++) {
-			    		Critter.worldTimeStep();
-			    		Critter.displayWorld(grid);
-        				grid.add(create, Params.world_width, Params.world_height);
-        				grid.add(createtxt,Params.world_width+1,Params.world_height);
-        				grid.add(step,Params.world_width,Params.world_height+1);
-        				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
-        				grid.add(stats,Params.world_width,Params.world_height+2);
-        				grid.add(statstxt, Params.world_width+1, Params.world_height+2);
-        				grid.add(statsres, Params.world_width+1, Params.world_height+3);
-        				grid.add(seed, Params.world_width, Params.world_height+4);
-        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
-        				grid.add(quit, Params.world_width, Params.world_height+5);
-				    	}
 
+				        new AnimationTimer() {
+				            @Override
+				            public void handle(long now) {
+						    	int steping = Integer.parseInt(steptxt.getText());
+						    	for(int i = 0; i < steping; i++) {	
+					    			Critter.worldTimeStep();
 
+							    	if(i % 10 == 0) {
+						    			Critter.displayWorld(grid);
+				        				grid.add(create, Params.world_width, Params.world_height);
+				        				grid.add(createtxt,Params.world_width+1,Params.world_height);
+				        				grid.add(step,Params.world_width,Params.world_height+1);
+				        				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
+				        				grid.add(stats,Params.world_width,Params.world_height+2);
+				        				grid.add(statstxt, Params.world_width+1, Params.world_height+2);
+				        				grid.add(statsres, Params.world_width+1, Params.world_height+3);
+				        				grid.add(seed, Params.world_width, Params.world_height+4);
+				        				grid.add(seedtxt, Params.world_width+1, Params.world_height+4);
+				        				grid.add(quit, Params.world_width, Params.world_height+5);  
+							    	}
+					    	}
+				            		//Animation?
+				                
+				            }
+				        }.start();
 				    }
+		    	                
 				});
 				quit.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override public void handle(ActionEvent e) {
@@ -185,8 +210,8 @@ public class Main extends Application {
 		public static void main(String[] args) {
 			launch(args);
 		}
-
-
+		
+		
 	protected static void paintGridLines(GridPane grid) {
 		int size = 552;
 		for (int r = 0; r < Params.world_width; r++)

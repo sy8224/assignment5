@@ -490,7 +490,6 @@ public abstract class Critter {
 	public static void displayWorld(GridPane grid) {
 		// Complete this method.
 		grid.getChildren().clear();
-		
 		Main.paintGridLines(grid);
 				for(Critter crit : population) {
 						switch(crit.viewShape()) {
