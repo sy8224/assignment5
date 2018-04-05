@@ -3,6 +3,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 
@@ -25,13 +29,14 @@ public class Main extends Application {
 			
 			try {			
 
-				grid.setGridLinesVisible(true);
+				grid.setGridLinesVisible(false);
 
 				Button create = new Button("Create");
 				Button step = new Button("Step");
 				Button quit = new Button("Quit");
 				Button seed = new Button("Seed");
 				Button stats = new Button("Statistics");
+				Button show = new Button("Show");
 				
 				TextField statstxt = new TextField();
 				TextField seedtxt = new TextField();
@@ -49,22 +54,47 @@ public class Main extends Application {
 				});	
 				int size = 600;
 				Scene scene = new Scene(grid, size, size+200);
-//				grid.add(create, 1, 1);
-//				grid.add(createtxt,1,0);
-//				grid.add(step,0,1);
-//				grid.add(steptxt, 1, 1);
-//				grid.add(quit, 0, 3);
-				
-		
+				grid.add(create, 0, Params.world_height);
+				grid.add(createtxt,1,Params.world_height);
+				grid.add(step,0,Params.world_height+1);
+				grid.add(steptxt, 1, Params.world_height+1);
+				grid.add(quit, 0, Params.world_height+2);
+				grid.add(show,0,Params.world_height+3);	//debug func
 				paintGridLines(grid);
 
+				
+				
+				Timeline tl = new Timeline();
+				tl.setCycleCount(Animation.INDEFINITE);
+		        KeyFrame stepframe = new KeyFrame(Duration.seconds(1),
+		                new EventHandler<ActionEvent>() {
+		                    public void handle(ActionEvent event) {
+		                    		//animation stuff
+		                    		Critter.displayWorld(grid);
+		            				grid.add(create, 0, Params.world_height);
+		            				grid.add(createtxt,1,Params.world_height);
+		            				grid.add(step,0,Params.world_height+1);
+		            				grid.add(steptxt, 1, Params.world_height+1);
+		            				grid.add(quit, 0, Params.world_height+2);
+		            				grid.add(show,0,Params.world_height+3);	//debug func
+		                    }
+		                });
+
+
+		        tl.getKeyFrames().add(stepframe);
+		        tl.play();
+				
 				primaryStage.setScene(scene);
-				
 				primaryStage.show();
-				
+
 				// Paints the icons.
 				//paint();
-				
+				show.setOnAction(new EventHandler<ActionEvent>() {	//debug function
+				    @Override public void handle(ActionEvent e) {
+				    		Critter.displayWorld(grid);
+
+				    }
+				});
 				seed.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override public void handle(ActionEvent e) {
 				        int seed = Integer.parseInt(seedtxt.getText());
@@ -160,7 +190,7 @@ public class Main extends Application {
 		
 	}
 	
-	private static void paintGridLines(GridPane grid) {
+	protected static void paintGridLines(GridPane grid) {
 		int size = 552;
 		for (int r = 0; r < Params.world_width; r++)
 			for (int c = 0; c < Params.world_height; c++) {
