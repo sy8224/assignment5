@@ -21,6 +21,7 @@ public class Critter4 extends TestCritter {
 	 */
 	@Override
 	public boolean fight(String opponent) {
+		this.look(Critter.getRandomInt(9),true);
 		return true;
 	}
 	/** 

@@ -11,10 +11,12 @@ public class Critter3 extends TestCritter {
 	public void doTimeStep() {
 		Critter3 offspring = new Critter3();
 		Critter3 offspring2 = new Critter3();
+		if(this.look(Critter.getRandomInt(9),false) == null) {
 		int randomDir = Critter.getRandomInt(8);
 		int randomDir2 = Critter.getRandomInt(8);
 		this.reproduce(offspring, randomDir);
 		this.reproduce(offspring2, randomDir2);
+		}
 	}
 	/**
 	 * always fights
