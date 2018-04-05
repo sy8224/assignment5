@@ -1,9 +1,11 @@
-package assignment4;
+package assignment5;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import javax.swing.*;
-import java.awt.*;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 
@@ -33,6 +36,7 @@ public class Main extends Application {
 				Button quit = new Button("Quit");
 				Button seed = new Button("Seed");
 				Button stats = new Button("Statistics");
+				Button show = new Button("Show");
 				
 				TextField statstxt = new TextField();
 				TextField seedtxt = new TextField();
@@ -49,33 +53,48 @@ public class Main extends Application {
 					}
 				});	
 				int size = 600;
-				int i = 3;
-				int j = 4;
-				JPanel[][] panelHolder = new JPanel[i][j];    
-//				getContentPane().setLayout(new GridLayout(i,j));
+				Scene scene = new Scene(grid, size+225, size+110);
+				grid.add(create, 0, Params.world_height);
+				grid.add(createtxt,1,Params.world_height);
+				grid.add(step,0,Params.world_height+1);
+				grid.add(steptxt, 1, Params.world_height+1);
+				grid.add(quit, 0, Params.world_height+2);
+				grid.add(show,0,Params.world_height+3);	//debug func
+				paintGridLines(grid);
 
-				for(int m = 0; m < i; m++) {
-				   for(int n = 0; n < j; n++) {
-				      panelHolder[m][n] = new JPanel();
-//				      add(panelHolder[m][n]);
-				   }
-				}
-				Scene scene = new Scene(grid, size+270, size+155);
-//				grid.add(create, 0, 0);
-//				grid.add(createtxt,1,0);
-//				grid.add(step,0,1);
-//				grid.add(steptxt, 1, 1);
-//				grid.add(quit, 0, 3);
 				
+				
+				Timeline tl = new Timeline();
+				tl.setCycleCount(Animation.INDEFINITE);
+		        KeyFrame stepframe = new KeyFrame(Duration.seconds(1),
+		                new EventHandler<ActionEvent>() {
+		                    public void handle(ActionEvent event) {
+		                    		//animation stuff
+		                    		Critter.displayWorld(grid);
+		            				grid.add(create, Params.world_width, Params.world_height);
+		            				grid.add(createtxt,Params.world_width+1,Params.world_height);
+		            				grid.add(step,Params.world_width,Params.world_height+1);
+		            				grid.add(steptxt, Params.world_width+1, Params.world_height+1);
+		            				grid.add(quit, Params.world_width, Params.world_height+2);
+		            				grid.add(show,Params.world_width,Params.world_height+3);	//debug func
+		                    }
+		                });
 
-				paintGridLines(grid,create,step,quit,seed,stats,statstxt,seedtxt,createtxt,steptxt);
 
+		        tl.getKeyFrames().add(stepframe);
+		        tl.play();
+				
 				primaryStage.setScene(scene);
 				primaryStage.show();
-				
+
 				// Paints the icons.
 				//paint();
-				
+				show.setOnAction(new EventHandler<ActionEvent>() {	//debug function
+				    @Override public void handle(ActionEvent e) {
+				    		Critter.displayWorld(grid);
+
+				    }
+				});
 				seed.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override public void handle(ActionEvent e) {
 				        int seed = Integer.parseInt(seedtxt.getText());
@@ -171,12 +190,7 @@ public class Main extends Application {
 		
 	}
 	
-	private static void paintGridLines(GridPane grid, Button b1, Button b2, Button b3, Button b4, Button b5, TextField t1, TextField t2, TextField t3, TextField t4) {
-		Button create = new Button("Create");
-		Button step = new Button("Step");
-		Button quit = new Button("Quit");
-		Button seed = new Button("Seed");
-		Button stats = new Button("Statistics");
+	protected static void paintGridLines(GridPane grid) {
 		int size = 552;
 		for (int r = 0; r < Params.world_width; r++)
 			for (int c = 0; c < Params.world_height; c++) {
@@ -185,15 +199,7 @@ public class Main extends Application {
 				s.setStroke(Color.BLUEVIOLET);
 				grid.add(s, c, r);
 			}
-		grid.add(b1, Params.world_width+20, Params.world_height+20);
-		grid.add(b5, Params.world_width+20, Params.world_height+25);
-		grid.add(b2, Params.world_width+20, Params.world_height+30);
-		grid.add(b4, Params.world_width+20, Params.world_height+35);
-		grid.add(b3, Params.world_width+20, Params.world_height+40);
-		grid.add(t3, Params.world_width+21, Params.world_height+20);
-		grid.add(t1, Params.world_width+21, Params.world_height+25);
-		grid.add(t2, Params.world_width+21, Params.world_height+30);
-		grid.add(t4, Params.world_width+21, Params.world_height+35);
+
 	}
 	
 	static Shape getIcon(int shapeIndex) {
