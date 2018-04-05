@@ -503,8 +503,8 @@ public abstract class Critter {
 								break;
 						case SQUARE:
 							Rectangle CritSquare = new Rectangle(552/Params.world_height,552/Params.world_height);
-							//CritSquare.setStroke(crit.viewOutlineColor());
-							//CritSquare.setFill(crit.viewFillColor());
+							CritSquare.setStroke(crit.viewOutlineColor());
+							CritSquare.setFill(crit.viewFillColor());
 							Main.grid.add(CritSquare, crit.y_coord, crit.x_coord);
 							break;
 						case TRIANGLE:
@@ -513,6 +513,8 @@ public abstract class Critter {
 								    12.5, 0.0,
 								    0.0, 25.0,
 								    26.0, 25.0 });
+							polygon.setStroke(crit.viewOutlineColor());
+							polygon.setFill(crit.viewFillColor());
 							Main.grid.add(polygon, crit.y_coord, crit.x_coord);
 							break;
 						case DIAMOND:
@@ -522,6 +524,8 @@ public abstract class Critter {
 								    27.0,13.5,
 								    13.5,27.0,
 								    0.0,13.5});
+							polygon1.setStroke(crit.viewOutlineColor());
+							polygon1.setFill(crit.viewFillColor());
 							Main.grid.add(polygon1, crit.y_coord, crit.x_coord);
 							break;
 						case STAR:
@@ -537,33 +541,14 @@ public abstract class Critter {
 								    7.5,17.0,
 								    0.0,10.0,
 								    9.0,9.0});
+							polygon2.setStroke(crit.viewOutlineColor());
+							polygon2.setFill(crit.viewFillColor());
 							Main.grid.add(polygon2, crit.y_coord, crit.x_coord);
 							break;
-							//Add shape to grid
 						}
 				}
 	}
 
-	
-	/*public static void displayWorld() {
-		// Complete this method.
-		WorldEdge(Params.world_width);
-		for(int y= 0; y < Params.world_height;y++) {
-			System.out.print("|");
-			//print contents of the world
-			for(int x = 0; x < Params.world_width;x++) {
-				String loc = " ";
-				for(Critter crit : population) {
-					if(crit.x_coord == x && crit.y_coord == y) {
-						loc = crit.toString();
-					}
-				}
-			System.out.print(loc);
-			}
-		System.out.println("|");
-		}
-		WorldEdge(Params.world_width);
-	}*/
 	
 	
 }

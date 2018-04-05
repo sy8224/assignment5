@@ -42,10 +42,15 @@ public class Critter4 extends TestCritter {
 	}
 	@Override
 	public CritterShape viewShape() {
-		return CritterShape.SQUARE;
+		return CritterShape.DIAMOND;
 	}
 	@Override
 	public javafx.scene.paint.Color viewOutlineColor() { 
 		return javafx.scene.paint.Color.NAVY; 
 	}
+	@Override
+	public javafx.scene.paint.Color viewFillColor() { 
+		return javafx.scene.paint.Color.NAVY; 
+	}
+	
 }
