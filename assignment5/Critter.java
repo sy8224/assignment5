@@ -9,6 +9,7 @@ import assignment5.InvalidCritterException;
 import assignment5.Params;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 public abstract class Critter {
@@ -477,7 +478,7 @@ public abstract class Critter {
 		}
 		updateRestEnergy();
 		cullDead();
-		genAlgae();
+		//genAlgae();
 		//Encounters here
 		//check for death after each encounter? or in the fight functions
 		population.addAll(babies);
@@ -507,18 +508,42 @@ public abstract class Critter {
 							Main.grid.add(CritSquare, crit.y_coord, crit.x_coord);
 							break;
 						case TRIANGLE:
-			
+							Polygon polygon = new Polygon();
+							polygon.getPoints().addAll(new Double[]{
+								    12.5, 0.0,
+								    0.0, 25.0,
+								    26.0, 25.0 });
+							Main.grid.add(polygon, crit.y_coord, crit.x_coord);
 							break;
 						case DIAMOND:
-			
+							Polygon polygon1 = new Polygon();
+							polygon1.getPoints().addAll(new Double[]{
+								    13.5,0.0,
+								    27.0,13.5,
+								    13.5,27.0,
+								    0.0,13.5});
+							Main.grid.add(polygon1, crit.y_coord, crit.x_coord);
 							break;
 						case STAR:
-			
+							Polygon polygon2 = new Polygon();
+							polygon2.getPoints().addAll(new Double[]{
+								    13.5,0.0,
+								   	18.0,9.0,
+								    27.0,10.0,
+								    19.0,17.0,
+								    22.0,27.0,
+								    13.5,19.0,
+								    5.0,27.0,
+								    7.5,17.0,
+								    0.0,10.0,
+								    9.0,9.0});
+							Main.grid.add(polygon2, crit.y_coord, crit.x_coord);
 							break;
 							//Add shape to grid
 						}
 				}
 	}
+
 	
 	/*public static void displayWorld() {
 		// Complete this method.

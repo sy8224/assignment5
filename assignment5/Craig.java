@@ -63,15 +63,15 @@ public class Craig extends Critter {
 			total_left += c.genes[5] + c.genes[6] + c.genes[7];
 		}
 		String result = "";
-		System.out.print("" + craigs.size() + " total Craigs    ");
+		//System.out.print("" + craigs.size() + " total Craigs    ");
 		result += "" + craigs.size() + " total Craigs    ";
-		System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * craigs.size()) + "% straight   ");
+		//System.out.print("" + total_straight / (GENE_TOTAL * 0.01 * craigs.size()) + "% straight   ");
 		result += "" + total_straight / (GENE_TOTAL * 0.01 * craigs.size()) + "% straight   ";
-		System.out.print("" + total_back / (GENE_TOTAL * 0.01 * craigs.size()) + "% back   ");
+		//System.out.print("" + total_back / (GENE_TOTAL * 0.01 * craigs.size()) + "% back   ");
 		result +="" + total_back / (GENE_TOTAL * 0.01 * craigs.size()) + "% back   ";
-		System.out.print("" + total_right / (GENE_TOTAL * 0.01 * craigs.size()) + "% right   ");
+		//System.out.print("" + total_right / (GENE_TOTAL * 0.01 * craigs.size()) + "% right   ");
 		result +="" + total_right / (GENE_TOTAL * 0.01 * craigs.size()) + "% right   ";
-		System.out.print("" + total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left   ");
+		//System.out.print("" + total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left   ");
 		result += "" + total_left / (GENE_TOTAL * 0.01 * craigs.size()) + "% left   ";
 		return result;
 	}
