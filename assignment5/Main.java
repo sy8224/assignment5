@@ -45,7 +45,7 @@ public class Main extends Application {
 				TextField seedtxt = new TextField();
 				TextField createtxt = new TextField();
 				TextField steptxt = new TextField();			
-				anispeed.setMaxWidth(50);
+				anispeed.setMaxWidth(55);
 				anispeed.setPromptText("speed");
 				statstxt.setPromptText("Critter Stats");
 				createtxt.setPromptText("Make Critter");
@@ -69,7 +69,7 @@ public class Main extends Application {
 				});
 				
 				int size = 600;
-				Scene scene = new Scene(grid, size+250, size+110);
+				Scene scene = new Scene(grid, size+280, size+120);
 
 				paintGridLines(grid);
 
